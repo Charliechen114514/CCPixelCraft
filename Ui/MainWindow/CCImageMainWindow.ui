@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>CCImageMainWindow</class>
+ <widget class="QMainWindow" name="CCImageMainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>739</width>
+    <height>544</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>CCImageMainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QVBoxLayout" name="verticalLayout_2">
+    <item>
+     <widget class="QWidget" name="browsing_widget" native="true">
+      <layout class="QVBoxLayout" name="verticalLayout" stretch="3,1">
+       <item>
+        <widget class="QLabel" name="label_display">
+         <property name="text">
+          <string/>
+         </property>
+         <property name="scaledContents">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QWidget" name="view_preview_now_widget" native="true">
+         <layout class="QHBoxLayout" name="horizontalLayout">
+          <item>
+           <widget class="QLabel" name="label_prev">
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="label_current">
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="label_next">
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>739</width>
+     <height>18</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+  <widget class="QToolBar" name="toolBar">
+   <property name="windowTitle">
+    <string>toolBar</string>
+   </property>
+   <property name="toolButtonStyle">
+    <enum>Qt::ToolButtonStyle::ToolButtonTextUnderIcon</enum>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+   <addaction name="action_add_images"/>
+   <addaction name="action_loadfromDir"/>
+  </widget>
+  <action name="action_add_images">
+   <property name="icon">
+    <iconset theme="QIcon::ThemeIcon::DocumentNew" resource="../../Sources/sources.qrc">
+     <normaloff>:/icons/toolbar/icons/toolbar/importImages.png</normaloff>:/icons/toolbar/icons/toolbar/importImages.png</iconset>
+   </property>
+   <property name="text">
+    <string>添加多张图像</string>
+   </property>
+   <property name="toolTip">
+    <string>添加多张图像</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+N</string>
+   </property>
+   <property name="menuRole">
+    <enum>QAction::MenuRole::NoRole</enum>
+   </property>
+  </action>
+  <action name="action_loadfromDir">
+   <property name="icon">
+    <iconset theme="QIcon::ThemeIcon::FolderNew" resource="../../Sources/sources.qrc">
+     <normaloff>:/icons/toolbar/icons/toolbar/importFolder.png</normaloff>:/icons/toolbar/icons/toolbar/importFolder.png</iconset>
+   </property>
+   <property name="text">
+    <string>添加文件夹图像</string>
+   </property>
+   <property name="toolTip">
+    <string>从文件夹选取图像添加</string>
+   </property>
+   <property name="menuRole">
+    <enum>QAction::MenuRole::NoRole</enum>
+   </property>
+  </action>
+ </widget>
+ <resources>
+  <include location="../../Sources/sources.qrc"/>
+ </resources>
+ <connections/>
+</ui>

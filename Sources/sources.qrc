@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/icons/toolbar">
+        <file>icons/toolbar/importFolder.png</file>
+        <file>icons/toolbar/importImages.png</file>
+    </qresource>
+</RCC>

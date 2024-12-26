@@ -1,0 +1,15 @@
+// the configured options and setting for Tutorial
+#define EXAMPLE_COMMON_PATH "@EXAMPLE_COMMON_PATH@"
+
+struct example_waiting_package{
+    char waiting_key;
+    int  waiting_time;
+};
+
+/* pre-announcements */
+namespace cv{class Mat;}
+void show_image_in_window(const cv::Mat& image,
+                          const char* window_name,
+                          const example_waiting_package& package);
+
+void resize_image(cv::Mat& image, int width = 600, int height = 480);
