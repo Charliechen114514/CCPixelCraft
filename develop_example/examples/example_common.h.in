@@ -1,10 +1,17 @@
 // the configured options and setting for Tutorial
+#include <vector>
 #define EXAMPLE_COMMON_PATH "@EXAMPLE_COMMON_PATH@"
 
+/*
+    wrap up as the waiting package,
+    to control the waiting time and key
+*/
 struct example_waiting_package{
     char waiting_key;
     int  waiting_time;
 };
+
+
 
 /* pre-announcements */
 namespace cv{class Mat;}
@@ -13,3 +20,23 @@ void show_image_in_window(const cv::Mat& image,
                           const example_waiting_package& package);
 
 void resize_image(cv::Mat& image, int width = 600, int height = 480);
+
+/*
+    wrap up as the display layout,
+    to control the layout of the display
+    using in display the multiple images
+*/
+struct display_layout{
+    int horizontal;
+    int vertical;
+};
+
+
+/*
+    using in display multiple images, it should be noticed that
+    we only allows the same image pictures to be displayed
+*/
+void display_multi_image(std::vector<cv::Mat> &images,
+                         const char* window_name,
+                         const display_layout& layout,
+                         const example_waiting_package& package);
