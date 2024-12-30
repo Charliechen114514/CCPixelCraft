@@ -46,6 +46,15 @@ public:
         current_index = --inner;
     }
 
+    Index inline switch_prev_one() {
+        current_index--;
+        return current_index;
+    }
+    Index inline switch_next_one() {
+        current_index++;
+        return current_index;
+    }
+
     void removeImage(const Index index);
     void removeImages(const Index begin, const Index end);
     void removeImages(const QList<Index>& indexes);

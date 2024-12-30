@@ -13,8 +13,19 @@ CCImageMainWindow::CCImageMainWindow(QWidget *parent)
 void CCImageMainWindow::initConnections() {
 }
 
+void CCImageMainWindow::adjustUiAccordingToGivenListImage(
+    const QList<QImage> &images) {
+    ui->action_prev_image->setEnabled(
+        !images.at(ImageHolder::ImageHolderIndex::PREV_PAGE).isNull());
+
+    ui->action_next_image->setEnabled(
+        !images.at(ImageHolder::ImageHolderIndex::NEXT_PAGE).isNull());
+}
+
 void CCImageMainWindow::onSetCurrentImage(const ImageHolder::Index &index) {
     QList<QImage> images = holder.get_packaged_image(index);
+    /* adjust ui interface */
+    adjustUiAccordingToGivenListImage(images);
     try {
         ui->label_display->setPixmap(
             QPixmap::fromImage(
@@ -60,4 +71,14 @@ void CCImageMainWindow::on_action_loadfromDir_triggered() {
     if (image_list.empty()) return;
     holder.insertImages(image_list, holder.size());
     onSetCurrentImage(holder.get_current_index());
+}
+
+void CCImageMainWindow::on_action_next_image_triggered() {
+    auto index = holder.switch_next_one();
+    onSetCurrentImage(index);
+}
+
+void CCImageMainWindow::on_action_prev_image_triggered() {
+    auto index = holder.switch_prev_one();
+    onSetCurrentImage(index);
 }

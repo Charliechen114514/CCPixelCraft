@@ -86,6 +86,8 @@
    </attribute>
    <addaction name="action_add_images"/>
    <addaction name="action_loadfromDir"/>
+   <addaction name="action_prev_image"/>
+   <addaction name="action_next_image"/>
   </widget>
   <action name="action_add_images">
    <property name="icon">
@@ -115,6 +117,38 @@
    </property>
    <property name="toolTip">
     <string>从文件夹选取图像添加</string>
+   </property>
+   <property name="menuRole">
+    <enum>QAction::MenuRole::NoRole</enum>
+   </property>
+  </action>
+  <action name="action_next_image">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset>
+     <normalon>:/icons/toolbar/icons/toolbar/next.png</normalon>
+    </iconset>
+   </property>
+   <property name="text">
+    <string>下一张图像</string>
+   </property>
+   <property name="menuRole">
+    <enum>QAction::MenuRole::NoRole</enum>
+   </property>
+  </action>
+  <action name="action_prev_image">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset>
+     <normalon>:/icons/toolbar/icons/toolbar/prev.png</normalon>
+    </iconset>
+   </property>
+   <property name="text">
+    <string>上一张图像</string>
    </property>
    <property name="menuRole">
     <enum>QAction::MenuRole::NoRole</enum>

@@ -2,5 +2,7 @@
     <qresource prefix="/icons/toolbar">
         <file>icons/toolbar/importFolder.png</file>
         <file>icons/toolbar/importImages.png</file>
+        <file>icons/toolbar/next.png</file>
+        <file>icons/toolbar/prev.png</file>
     </qresource>
 </RCC>

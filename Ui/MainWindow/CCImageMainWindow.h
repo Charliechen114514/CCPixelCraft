@@ -22,9 +22,14 @@ private slots:
 
     void on_action_loadfromDir_triggered();
 
+    void on_action_next_image_triggered();
+
+    void on_action_prev_image_triggered();
+
 private:
     Ui::CCImageMainWindow *ui;
     ImageHolder            holder;
     void                   initConnections();
+    void adjustUiAccordingToGivenListImage(const QList<QImage> &images);
 };
 #endif  // CCIMAGEMAINWINDOW_H
