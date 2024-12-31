@@ -24,7 +24,7 @@ endif()
 set(REQ_TEST ON)
 
 # Set if the develop examples are required
-set(REQ_EXAMPLE ON)
+set(REQ_EXAMPLE OFF)
 
 # Find neccessary packages for the projects
 # Projects requires the opencv as the
@@ -46,45 +46,85 @@ find_package(OpenCV REQUIRED)	# 找到opencv库
 message(STATUS "Broadcasting the project infos")
 message(STATUS "Root source directory: ${CMAKE_SOURCE_DIR}")
 
+
+# For some reason, We need to set the searching path of
+# ui components which inherited from the Qt Components
+set(COMPONENT_SEARCHING_PATH
+    Ui/Components/DisplayLabel
+    Ui/Components/PreviewLabel
+)
+
 set(TARGET_SEARCHING_PATH
     Core/
     Ui/
     Core/ImageImporter
     Ui/MainWindow
     Core/Utils/
+    Core/predef/
+    Ui/Initializer
+    Ui/ActionMonitor
+    ${COMPONENT_SEARCHING_PATH}
 )
 
 set(CORE_SOURCE
     Core/ImageImporter/ImageImporter.cpp
     Core/ImageHolder/ImageHolder.cpp
     Core/Utils/convertor/image_convertor.cpp
+    Core/StatusBarInfoManager/StatusBarInfoManager.cpp
 )
 
 set(CORE_INCLUDE
     Core/ImageImporter/ImageImporter.h
     Core/ImageHolder/ImageHolder.h
     Core/Utils/convertor/image_convertor.h
+    Core/StatusBarInfoManager/StatusBarInfoManager.h
 )
+
+set(UiComponenet_SOURCE
+    Ui/Components/DisplayLabel/DisplayLabel.cpp
+    Ui/Components/PreviewLabel/PreviewLabel.cpp
+)
+
+set(UiComponenet_INCLUDE
+    Ui/Components/DisplayLabel/DisplayLabel.h
+    Ui/Components/PreviewLabel/PreviewLabel.h
+)
+
 
 set(UI_SOURCE
     Ui/MainWindow/CCImageMainWindow.cpp
     Ui/UiUtils.cpp
+    Ui/MainWindow/UiMainWindowInitializer.cpp
+    Ui/WindowHelper/windoweventhelper.cpp
+    Ui/ActionMonitor/eventhandlefunctor.cpp
+    Ui/ActionMonitor/KeyboardMonitor/keyboardmonitor.cpp
+    Ui/ActionMonitor/MouseMonitor/mousemonitor.cpp
+    Ui/ActionMonitor/eventhandlefunctor.cpp
 )
 
 set( UI_INCLUDE
     Ui/UiUtils.h
     Ui/MainWindow/CCImageMainWindow.h
+    Ui/MainWindow/UiMainWindowInitializer.h
+    Ui/WindowHelper/windoweventhelper.h
+    Ui/ActionMonitor/eventhandlefunctor.h
+    Ui/ActionMonitor/KeyboardMonitor/keyboardmonitor.h
+    Ui/ActionMonitor/MouseMonitor/mousemonitor.h
+    Ui/ActionMonitor/eventhandlefunctor.h
 )
 
 set( SOURCE
     ${UI_SOURCE}
+    ${UiComponenet_SOURCE}
     ${CORE_SOURCE}
     Core/main.cpp
 )
 
 set(INCLUDES
     ${UI_INCLUDE}
+    ${UiComponenet_INCLUDE}
     ${CORE_INCLUDE}
+    Core/predef/predef.h
 )
 
 set(UI_FILE
@@ -104,6 +144,8 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         MANUAL_FINALIZATION
         ${PROJECT_SOURCES}
         ${QRC_FILE}
+        Ui/ImageInfoWidget/ImageInfoWidget.h Ui/ImageInfoWidget/ImageInfoWidget.cpp Ui/ImageInfoWidget/ImageInfoWidget.ui
+
     )
 # Define target properties for Android with Qt 6 as:
 #    set_property(TARGET CCImageEditor APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR

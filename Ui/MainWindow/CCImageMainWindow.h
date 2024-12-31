@@ -3,6 +3,10 @@
 #include "ImageHolder/ImageHolder.h"
 #include <QMainWindow>
 
+class StatusBarManager;
+class PreviewLabel;
+class WindowEventHelper;
+
 QT_BEGIN_NAMESPACE
 namespace Ui {
 class CCImageMainWindow;
@@ -17,19 +21,22 @@ public:
     ~CCImageMainWindow();
     void onSetCurrentImage(const ImageHolder::Index &index);
 
-private slots:
-    void on_action_add_images_triggered();
-
-    void on_action_loadfromDir_triggered();
-
-    void on_action_next_image_triggered();
-
-    void on_action_prev_image_triggered();
+public slots:
+    void addImages();
+    void loadFromDirent();
+    void next_image();
+    void prev_image();
+    void handling_label_selection(PreviewLabel *label);
+    void keyPressEvent(QKeyEvent *event) override;
 
 private:
-    Ui::CCImageMainWindow *ui;
-    ImageHolder            holder;
-    void                   initConnections();
+    friend class UiMainWindowInitializer;
+    Ui::CCImageMainWindow             *ui;
+    ImageHolder                        holder;
+    std::shared_ptr<StatusBarManager>  statusBarInfoManager;
+    std::shared_ptr<WindowEventHelper> windowEventHelper;
+    void                               initMemory();
+    void                               initConnections();
     void adjustUiAccordingToGivenListImage(const QList<QImage> &images);
 };
 #endif  // CCIMAGEMAINWINDOW_H

@@ -48,10 +48,16 @@ public:
 
     Index inline switch_prev_one() {
         current_index--;
+        if (current_index < 0) {
+            current_index = 0;
+        }
         return current_index;
     }
     Index inline switch_next_one() {
         current_index++;
+        if (current_index >= image_list.size()) {
+            current_index = image_list.size() - 1;
+        }
         return current_index;
     }
 

@@ -1,16 +1,31 @@
 #include "CCImageMainWindow.h"
 #include "ImageImporter.h"
+#include "StatusBarInfoManager/StatusBarInfoManager.h"
+#include "UiMainWindowInitializer.h"
 #include "UiUtils.h"
+#include "WindowHelper/windoweventhelper.h"
 #include "ui_CCImageMainWindow.h"
 #include <QFileDialog>
+#include <QKeyEvent>
 #include <QMessageBox>
+/*
+    1. init Memory each components requried
+*/
 CCImageMainWindow::CCImageMainWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::CCImageMainWindow) {
     ui->setupUi(this);
+    initMemory();
     initConnections();
 }
 
+void CCImageMainWindow::initMemory() {
+    this->statusBarInfoManager =
+        std::make_shared<StatusBarManager>(ui->statusbar, this);
+    this->windowEventHelper = std::make_shared<WindowEventHelper>();
+}
+
 void CCImageMainWindow::initConnections() {
+    UiMainWindowInitializer::initUiMainWindowConnections(this);
 }
 
 void CCImageMainWindow::adjustUiAccordingToGivenListImage(
@@ -27,22 +42,29 @@ void CCImageMainWindow::onSetCurrentImage(const ImageHolder::Index &index) {
     /* adjust ui interface */
     adjustUiAccordingToGivenListImage(images);
     try {
-        ui->label_display->setPixmap(
+        QPixmap current =
             QPixmap::fromImage(
                 images.at(ImageHolder::ImageHolderIndex::CURRENT_PAGE))
-                .scaled(ui->label_display->size()));
-        ui->label_prev->setPixmap(
-            QPixmap::fromImage(
-                images.at(ImageHolder::ImageHolderIndex::PREV_PAGE))
-                .scaled(ui->label_prev->size()));
-        ui->label_next->setPixmap(
-            QPixmap::fromImage(
-                images.at(ImageHolder::ImageHolderIndex::NEXT_PAGE))
-                .scaled(ui->label_next->size()));
-        ui->label_current->setPixmap(
-            QPixmap::fromImage(
-                images.at(ImageHolder::ImageHolderIndex::CURRENT_PAGE))
-                .scaled(ui->label_current->size()));
+                .scaled(ui->label_display->size());
+        ui->label_display->setPixmap(current);
+        ui->label_current->setPixmap(current.scaled(ui->label_current->size()));
+        if (!images.at(ImageHolder::ImageHolderIndex::PREV_PAGE).isNull()) {
+            ui->label_prev->setPixmap(
+                QPixmap::fromImage(
+                    images.at(ImageHolder::ImageHolderIndex::PREV_PAGE))
+                    .scaled(ui->label_prev->size()));
+        } else {
+            ui->label_prev->setPixmap(QPixmap());
+        }
+        if (!images.at(ImageHolder::ImageHolderIndex::NEXT_PAGE).isNull()) {
+            ui->label_next->setPixmap(
+                QPixmap::fromImage(
+                    images.at(ImageHolder::ImageHolderIndex::NEXT_PAGE))
+                    .scaled(ui->label_next->size()));
+        } else {
+            ui->label_next->setPixmap(QPixmap());
+        }
+
     } catch (...) {
         QMessageBox::critical(this, "发生错误", "获取图像错误！");
     }
@@ -54,7 +76,8 @@ CCImageMainWindow::~CCImageMainWindow() {
 /*
     toolbar actions
 */
-void CCImageMainWindow::on_action_add_images_triggered() {
+
+void CCImageMainWindow::addImages() {
     QStringList image_list = ImageImporter::import_from_dialog_default(
         UiUtils::provide_default_selection_dirent());
     if (image_list.empty()) return;
@@ -62,7 +85,7 @@ void CCImageMainWindow::on_action_add_images_triggered() {
     onSetCurrentImage(holder.get_current_index());
 }
 
-void CCImageMainWindow::on_action_loadfromDir_triggered() {
+void CCImageMainWindow::loadFromDirent() {
     QString dir_path = QFileDialog::getExistingDirectory(
         this, "请选择图像文件夹", UiUtils::provide_default_selection_dirent());
     if (dir_path.isEmpty()) return;
@@ -73,12 +96,34 @@ void CCImageMainWindow::on_action_loadfromDir_triggered() {
     onSetCurrentImage(holder.get_current_index());
 }
 
-void CCImageMainWindow::on_action_next_image_triggered() {
+void CCImageMainWindow::next_image() {
+    if (holder.size() == 0) {
+        statusBarInfoManager->postTemporaryMessage("请先选取图片加载浏览");
+        return;
+    }
     auto index = holder.switch_next_one();
     onSetCurrentImage(index);
 }
 
-void CCImageMainWindow::on_action_prev_image_triggered() {
+void CCImageMainWindow::prev_image() {
+    if (holder.size() == 0) {
+        statusBarInfoManager->postTemporaryMessage("请先选取图片加载浏览");
+        return;
+    }
     auto index = holder.switch_prev_one();
     onSetCurrentImage(index);
+}
+
+void CCImageMainWindow::handling_label_selection(PreviewLabel *label) {
+    if (label == ui->label_prev) {
+        prev_image();
+    } else if (label == ui->label_next) {
+        next_image();
+    }
+}
+
+void CCImageMainWindow::keyPressEvent(QKeyEvent *event) {
+    windowEventHelper->setModifiers(event->modifiers(),
+                                    WindowEventHelper::Monitor::Global);
+    windowEventHelper->doKeyProcess(event->key());
 }
