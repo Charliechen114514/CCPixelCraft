@@ -12,6 +12,7 @@ class ImageInfoWidget : public QWidget {
 
 public:
     explicit ImageInfoWidget(QWidget *parent = nullptr);
+    void onSetImageInfo(const QString &image_path);
     ~ImageInfoWidget();
 
 private:

@@ -1,5 +1,6 @@
 #include "UiMainWindowInitializer.h"
 #include "CCImageMainWindow.h"
+#include "ImageInfoWidget/ImageInfoWidget.h"
 #include "StatusBarInfoManager/StatusBarInfoManager.h"
 #include "WindowHelper/windoweventhelper.h"
 #include "ui_CCImageMainWindow.h"
@@ -59,4 +60,8 @@ void UiMainWindowInitializer::_connect_toolBar(CCImageMainWindow *window) {
 }
 
 void UiMainWindowInitializer::_init_style(CCImageMainWindow *window) {
+    QVBoxLayout *layout = new QVBoxLayout(window->ui->operating_widget);
+    layout->addWidget(window->infoWidget.get());
+    window->ui->operating_widget->setLayout(layout);
+    window->infoWidget->hide();
 }

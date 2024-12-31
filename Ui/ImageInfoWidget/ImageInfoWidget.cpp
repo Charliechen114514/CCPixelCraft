@@ -6,6 +6,9 @@ ImageInfoWidget::ImageInfoWidget(QWidget *parent)
     ui->setupUi(this);
 }
 
+void ImageInfoWidget::onSetImageInfo(const QString &image_path) {
+}
+
 ImageInfoWidget::~ImageInfoWidget() {
     delete ui;
 }

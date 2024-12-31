@@ -5,4 +5,11 @@
         <file>icons/toolbar/next.png</file>
         <file>icons/toolbar/prev.png</file>
     </qresource>
+    <qresource prefix="/icons/imageinfo">
+        <file>icons/image_info_widget/image_date.png</file>
+        <file>icons/image_info_widget/image_name.png</file>
+        <file>icons/image_info_widget/image_path.png</file>
+        <file>icons/image_info_widget/image_size.png</file>
+        <file>icons/image_info_widget/image_time.png</file>
+    </qresource>
 </RCC>

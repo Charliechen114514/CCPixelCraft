@@ -6,6 +6,7 @@
 class StatusBarManager;
 class PreviewLabel;
 class WindowEventHelper;
+class ImageInfoWidget;
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -26,6 +27,7 @@ public slots:
     void loadFromDirent();
     void next_image();
     void prev_image();
+    void onCheckImageInfo(const ImageHolder::Index &index);
     void handling_label_selection(PreviewLabel *label);
     void keyPressEvent(QKeyEvent *event) override;
 
@@ -35,8 +37,11 @@ private:
     ImageHolder                        holder;
     std::shared_ptr<StatusBarManager>  statusBarInfoManager;
     std::shared_ptr<WindowEventHelper> windowEventHelper;
-    void                               initMemory();
-    void                               initConnections();
+    std::shared_ptr<ImageInfoWidget>   infoWidget{nullptr};
+
+    void initMemory();
+    void initConnections();
+    void onOpenTargetImageInfo(const QString &image_path);
     void adjustUiAccordingToGivenListImage(const QList<QImage> &images);
 };
 #endif  // CCIMAGEMAINWINDOW_H

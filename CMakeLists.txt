@@ -100,6 +100,7 @@ set(UI_SOURCE
     Ui/ActionMonitor/KeyboardMonitor/keyboardmonitor.cpp
     Ui/ActionMonitor/MouseMonitor/mousemonitor.cpp
     Ui/ActionMonitor/eventhandlefunctor.cpp
+    Ui/ImageInfoWidget/ImageInfoWidget.cpp
 )
 
 set( UI_INCLUDE
@@ -111,6 +112,7 @@ set( UI_INCLUDE
     Ui/ActionMonitor/KeyboardMonitor/keyboardmonitor.h
     Ui/ActionMonitor/MouseMonitor/mousemonitor.h
     Ui/ActionMonitor/eventhandlefunctor.h
+    Ui/ImageInfoWidget/ImageInfoWidget.h
 )
 
 set( SOURCE
@@ -129,6 +131,7 @@ set(INCLUDES
 
 set(UI_FILE
     Ui/MainWindow/CCImageMainWindow.ui
+    Ui/ImageInfoWidget/ImageInfoWidget.ui
 )
 
 set(QRC_FILE Sources/sources.qrc)
@@ -144,8 +147,6 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         MANUAL_FINALIZATION
         ${PROJECT_SOURCES}
         ${QRC_FILE}
-        Ui/ImageInfoWidget/ImageInfoWidget.h Ui/ImageInfoWidget/ImageInfoWidget.cpp Ui/ImageInfoWidget/ImageInfoWidget.ui
-
     )
 # Define target properties for Android with Qt 6 as:
 #    set_property(TARGET CCImageEditor APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR

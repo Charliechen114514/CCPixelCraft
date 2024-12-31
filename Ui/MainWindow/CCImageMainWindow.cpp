@@ -1,5 +1,6 @@
 #include "CCImageMainWindow.h"
 #include "ImageImporter.h"
+#include "ImageInfoWidget/ImageInfoWidget.h"
 #include "StatusBarInfoManager/StatusBarInfoManager.h"
 #include "UiMainWindowInitializer.h"
 #include "UiUtils.h"
@@ -26,6 +27,13 @@ void CCImageMainWindow::initMemory() {
 
 void CCImageMainWindow::initConnections() {
     UiMainWindowInitializer::initUiMainWindowConnections(this);
+}
+
+void CCImageMainWindow::onOpenTargetImageInfo(const QString &image_path) {
+    if (!infoWidget) {
+        this->infoWidget = std::make_shared<ImageInfoWidget>();
+    }
+    infoWidget->onSetImageInfo(image_path);
 }
 
 void CCImageMainWindow::adjustUiAccordingToGivenListImage(
@@ -112,6 +120,11 @@ void CCImageMainWindow::prev_image() {
     }
     auto index = holder.switch_prev_one();
     onSetCurrentImage(index);
+}
+
+void CCImageMainWindow::onCheckImageInfo(const ImageHolder::Index &index) {
+    QString image_path = holder.get_index_path(index);
+    onOpenTargetImageInfo(image_path);
 }
 
 void CCImageMainWindow::handling_label_selection(PreviewLabel *label) {
