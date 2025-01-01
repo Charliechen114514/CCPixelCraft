@@ -21,7 +21,9 @@ configure_file(example_common.h.in ${CMAKE_CURRENT_BINARY_DIR}/example_common.h)
 # as direct
 
 # 确保这里是正确的列表格式
-set(EXAMPLES_LISTS beginners basic_usage imread cvtcolor)  # 定义一个包含多个元素的列表
+set(EXAMPLES_LISTS
+    beginners basic_usage imread cvtcolor scan_image
+)  # 定义一个包含多个元素的列表
 foreach(each_build_sub ${EXAMPLES_LISTS})
     add_example_subdirectory(${each_build_sub})
 endforeach()
