@@ -13,10 +13,13 @@ class ImageInfoWidget : public QWidget {
 public:
     explicit ImageInfoWidget(QWidget *parent = nullptr);
     void onSetImageInfo(const QString &image_path);
+    void processLoadReading();
     ~ImageInfoWidget();
 
 private:
+    bool                 req_fresh{true};
     Ui::ImageInfoWidget *ui;
+    QString              current_hold_image_path;
 };
 
 #endif  // IMAGEINFOWIDGET_H

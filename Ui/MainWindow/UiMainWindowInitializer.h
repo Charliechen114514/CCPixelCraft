@@ -17,6 +17,7 @@ private:
     static void _init_keyAndMouseEvent(CCImageMainWindow* window);
     static void _init_keyEvent(CCImageMainWindow* window);
     static void _init_mouseEvent(CCImageMainWindow* window);
+    static void _init_finilize(CCImageMainWindow* window);
 };
 
 #endif  // UIMAINWINDOWINITIALIZER_H

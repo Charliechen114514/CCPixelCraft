@@ -1,6 +1,8 @@
 #include "CCImageMainWindow.h"
 #include "ImageImporter.h"
 #include "ImageInfoWidget/ImageInfoWidget.h"
+#include "OperateWidgetManage/OperateWidgetManage.h"
+#include "SizeManager/SizeManager.h"
 #include "StatusBarInfoManager/StatusBarInfoManager.h"
 #include "UiMainWindowInitializer.h"
 #include "UiUtils.h"
@@ -9,6 +11,7 @@
 #include <QFileDialog>
 #include <QKeyEvent>
 #include <QMessageBox>
+
 /*
     1. init Memory each components requried
 */
@@ -22,18 +25,39 @@ CCImageMainWindow::CCImageMainWindow(QWidget *parent)
 void CCImageMainWindow::initMemory() {
     this->statusBarInfoManager =
         std::make_shared<StatusBarManager>(ui->statusbar, this);
-    this->windowEventHelper = std::make_shared<WindowEventHelper>();
+    this->windowEventHelper   = std::make_shared<WindowEventHelper>();
+    this->operateWidgetManage = std::make_shared<OperateWidgetManage>(this);
 }
 
 void CCImageMainWindow::initConnections() {
     UiMainWindowInitializer::initUiMainWindowConnections(this);
 }
 
-void CCImageMainWindow::onOpenTargetImageInfo(const QString &image_path) {
+void CCImageMainWindow::onSwitchTargetImageInfo(const QString &image_path) {
     if (!infoWidget) {
-        this->infoWidget = std::make_shared<ImageInfoWidget>();
+        this->infoWidget =
+            std::make_shared<ImageInfoWidget>(ui->operating_widget);
+        ui->operating_widget->layout()->addWidget(this->infoWidget.get());
     }
-    infoWidget->onSetImageInfo(image_path);
+
+    if (!this->infoWidget->isVisible()) {
+        infoWidget->onSetImageInfo(image_path);
+        infoWidget->processLoadReading();
+        operateWidgetManage->showSubWidget(infoWidget.get());
+        ui->action_browse_image_info->setText("关闭图像信息");
+    } else {
+        operateWidgetManage->hideSubWidget(infoWidget.get());
+        ui->action_browse_image_info->setText("浏览图像信息");
+    }
+}
+
+void CCImageMainWindow::onOpenTargetImageInfo(const QString &image_path) {
+    if (!infoWidget) return;
+
+    if (this->infoWidget->isVisible()) {
+        infoWidget->onSetImageInfo(image_path);
+        infoWidget->processLoadReading();
+    }
 }
 
 void CCImageMainWindow::adjustUiAccordingToGivenListImage(
@@ -43,6 +67,16 @@ void CCImageMainWindow::adjustUiAccordingToGivenListImage(
 
     ui->action_next_image->setEnabled(
         !images.at(ImageHolder::ImageHolderIndex::NEXT_PAGE).isNull());
+
+    ui->action_browse_image_info->setEnabled(
+        !images.at(ImageHolder::ImageHolderIndex::CURRENT_PAGE).isNull());
+
+    /* process the loading widget */
+    adjustOperateWidgetAccordingToGivenListImage();
+}
+
+void CCImageMainWindow::adjustOperateWidgetAccordingToGivenListImage() {
+    onOpenTargetImageInfo(holder.get_index_path(holder.get_current_index()));
 }
 
 void CCImageMainWindow::onSetCurrentImage(const ImageHolder::Index &index) {
@@ -122,9 +156,18 @@ void CCImageMainWindow::prev_image() {
     onSetCurrentImage(index);
 }
 
+void CCImageMainWindow::onCheckImageCurrentInfo() {
+    auto index = holder.get_current_index();
+    if (index == ImageHolder::INVALID_INDEX) {
+        statusBarInfoManager->postTemporaryMessage("请先选取图片加载浏览");
+        return;
+    }
+    onCheckImageInfo(index);
+}
+
 void CCImageMainWindow::onCheckImageInfo(const ImageHolder::Index &index) {
     QString image_path = holder.get_index_path(index);
-    onOpenTargetImageInfo(image_path);
+    onSwitchTargetImageInfo(image_path);
 }
 
 void CCImageMainWindow::handling_label_selection(PreviewLabel *label) {

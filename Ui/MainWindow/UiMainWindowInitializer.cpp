@@ -15,6 +15,7 @@ void UiMainWindowInitializer::initUiMainWindowConnections(
     _connect_functional(window);
     _init_style(window);
     _init_keyAndMouseEvent(window);
+    _init_finilize(window);
 }
 
 void UiMainWindowInitializer::_init_keyAndMouseEvent(
@@ -57,11 +58,15 @@ void UiMainWindowInitializer::_connect_toolBar(CCImageMainWindow *window) {
             &CCImageMainWindow::next_image);
     connect(window->ui->action_prev_image, &QAction::triggered, window,
             &CCImageMainWindow::prev_image);
+    connect(window->ui->action_browse_image_info, &QAction::triggered, window,
+            &CCImageMainWindow::onCheckImageCurrentInfo);
 }
 
 void UiMainWindowInitializer::_init_style(CCImageMainWindow *window) {
     QVBoxLayout *layout = new QVBoxLayout(window->ui->operating_widget);
-    layout->addWidget(window->infoWidget.get());
     window->ui->operating_widget->setLayout(layout);
-    window->infoWidget->hide();
+    layout->setSizeConstraint(QLayout::SetFixedSize);
+}
+
+void UiMainWindowInitializer::_init_finilize(CCImageMainWindow *window) {
 }

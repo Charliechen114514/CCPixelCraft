@@ -2,4 +2,7 @@
 
 ​	A PixelLevel Image Convertor And Processor. Also Provide Opencv4 Tourial Usage...
 
-​	Further README is processing...
+## PreRelease Update
+
+1. Support Browse Image
+2. Check the Image infomations
