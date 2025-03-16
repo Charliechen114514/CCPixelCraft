@@ -15,6 +15,7 @@
 /*
     1. init Memory each components requried
 */
+
 CCImageMainWindow::CCImageMainWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::CCImageMainWindow) {
     ui->setupUi(this);
